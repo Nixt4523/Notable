@@ -1,7 +1,11 @@
 import { electronApp, is, optimizer } from "@electron-toolkit/utils";
 import { app, BrowserWindow, ipcMain, shell } from "electron";
-import { join } from "path";
+import path, { join } from "path";
 import icon from "../../resources/icon.png?asset";
+import NoteManager from "./lib/NoteManager";
+
+const rootNotesDir = path.join(app.getPath("documents"), "Notable");
+const noteManager = new NoteManager(rootNotesDir);
 
 function createWindow(): void {
 	const mainWindow = new BrowserWindow({
@@ -41,7 +45,12 @@ app.whenReady().then(() => {
 		optimizer.watchWindowShortcuts(window);
 	});
 
-	ipcMain.on("ping", () => console.log("pong"));
+	ipcMain.handle("getAllNotes", () => noteManager.getAllNotes());
+	ipcMain.handle("readNote", (_, noteName: string) => noteManager.readNote(noteName));
+	ipcMain.handle("writeNote", (_, noteName: string, noteContent: string) =>
+		noteManager.writeNote(noteName, noteContent)
+	);
+	ipcMain.handle("deleteNote", (_, noteName: string) => noteManager.deleteNote(noteName));
 
 	createWindow();
 
