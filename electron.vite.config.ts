@@ -7,12 +7,12 @@ export default defineConfig({
 		plugins: [externalizeDepsPlugin()],
 		resolve: {
 			alias: {
-				"@lib": resolve("src/main/lib")
-			}
-		}
+				"@lib": resolve("src/main/lib"),
+			},
+		},
 	},
 	preload: {
-		plugins: [externalizeDepsPlugin()]
+		plugins: [externalizeDepsPlugin()],
 	},
 	renderer: {
 		assetsInclude: "src/renderer/assets/**",
@@ -22,9 +22,10 @@ export default defineConfig({
 				"@components": resolve("src/renderer/src/components"),
 				"@hooks": resolve("src/renderer/src/hooks"),
 				"@utils": resolve("src/renderer/src/utils"),
-				"@/*": resolve("src/renderer/src/**/*")
-			}
+				"@store": resolve("src/renderer/src/store"),
+				"@/*": resolve("src/renderer/src/**/*"),
+			},
 		},
-		plugins: [react()]
-	}
+		plugins: [react()],
+	},
 });

@@ -23,6 +23,9 @@
       "@utils/*": [
         "src/renderer/src/utils/*"
       ],
+      "@store/*": [
+        "src/renderer/src/store/*"
+      ],
     }
   }
 }

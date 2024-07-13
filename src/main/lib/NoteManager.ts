@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as fs from "fs/promises";
 import path from "path";
 

@@ -10,7 +10,7 @@ try {
 		readNote: (noteName: string) => ipcRenderer.invoke("readNote", noteName),
 		writeNote: (noteName: string, noteContent: string) =>
 			ipcRenderer.invoke("writeNote", noteName, noteContent),
-		deleteNote: (noteName: string) => ipcRenderer.invoke("deleteNote", noteName)
+		deleteNote: (noteName: string) => ipcRenderer.invoke("deleteNote", noteName),
 	});
 } catch (error) {
 	console.log(error);
