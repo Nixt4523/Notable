@@ -1,7 +1,14 @@
+import useWindowActions from "@hooks/useWindowActions";
+
 const WindowActions = (): JSX.Element => {
+	const { minimizeWindow, resizeWindow, closeWindow } = useWindowActions();
+
 	return (
 		<section className="absolute top-0 right-0 flex items-center border-b-2 border-l-2 divide-x-2 border-neutral-700 divide-neutral-700 bg-neutral-900">
-			<button className="flex items-center justify-center w-8 h-8 p-2">
+			<button
+				onClick={() => minimizeWindow()}
+				className="flex items-center justify-center w-8 h-8 p-2"
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"
@@ -19,7 +26,10 @@ const WindowActions = (): JSX.Element => {
 					/>
 				</svg>
 			</button>
-			<button className="flex items-center justify-center w-8 h-8 p-2">
+			<button
+				onClick={() => resizeWindow()}
+				className="flex items-center justify-center w-8 h-8 p-2"
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"
@@ -35,7 +45,10 @@ const WindowActions = (): JSX.Element => {
 					/>
 				</svg>
 			</button>
-			<button className="flex items-center justify-center w-8 h-8 p-2">
+			<button
+				onClick={() => closeWindow()}
+				className="flex items-center justify-center w-8 h-8 p-2"
+			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 24 24"

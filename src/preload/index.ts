@@ -11,6 +11,9 @@ try {
 		writeNote: (noteName: string, noteContent: string) =>
 			ipcRenderer.invoke("writeNote", noteName, noteContent),
 		deleteNote: (noteName: string) => ipcRenderer.invoke("deleteNote", noteName),
+		minimizeWindow: () => ipcRenderer.send("minimizeWindow"),
+		resizeWindow: () => ipcRenderer.send("resizeWindow"),
+		closeWindow: () => ipcRenderer.send("closeWindow"),
 	});
 } catch (error) {
 	console.log(error);
