@@ -8,6 +8,7 @@ export default defineConfig({
 		resolve: {
 			alias: {
 				"@lib": resolve("src/main/lib"),
+				"@shared": resolve("src/shared"),
 			},
 		},
 	},
@@ -23,6 +24,7 @@ export default defineConfig({
 				"@hooks": resolve("src/renderer/src/hooks"),
 				"@utils": resolve("src/renderer/src/utils"),
 				"@store": resolve("src/renderer/src/store"),
+				"@shared": resolve("src/shared"),
 				"@/*": resolve("src/renderer/src/**/*"),
 			},
 		},

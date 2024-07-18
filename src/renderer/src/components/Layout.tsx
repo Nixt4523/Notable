@@ -11,12 +11,12 @@ const Layout = (): JSX.Element => {
 	const { newNoteModalOpen, noteInfoModalOpen } = useSelector((state: RootState) => state.modals);
 
 	return (
-		<section className="flex items-start w-screen h-screen">
+		<section className="flex items-start overflow-hidden w-dvw h-dvh">
 			<WindowActions />
 			{newNoteModalOpen && <NewNoteModal />}
 			{noteInfoModalOpen && <NoteInfoModal />}
 			<Sidebar />
-			<main className="flex flex-col items-start flex-1 w-full">
+			<main className="flex flex-col items-start flex-1 w-full h-auto">
 				<NoteTitle />
 				<Editor />
 			</main>

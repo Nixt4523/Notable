@@ -1,76 +1,62 @@
-import Color from "@tiptap/extension-color";
-import Highlight from "@tiptap/extension-highlight";
-import TaskItem from "@tiptap/extension-task-item";
-import TaskList from "@tiptap/extension-task-list";
-import TextStyle from "@tiptap/extension-text-style";
-import Underline from "@tiptap/extension-underline";
+import { RootState } from "@renderer/store";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import CustomBubbleMenu from "./CustomBubbleMenu";
 import CustomFloatingMenu from "./CustomFloatingMenu";
+import { getExtensions } from "./EditorExtensions";
+import SavingIndicator from "./SavingIndicator";
 
 const Editor = (): JSX.Element => {
-	const content = "Hello, World!";
-
-	const extensions = [
-		StarterKit.configure({
-			heading: {
-				levels: [1, 2, 3],
-				HTMLAttributes: {
-					class: "font-bold text-white prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl",
-				},
-			},
-			bold: { HTMLAttributes: { class: "font-black text-white" } },
-			italic: { HTMLAttributes: { class: "italic text-white" } },
-			strike: { HTMLAttributes: { class: "line-through" } },
-			paragraph: { HTMLAttributes: { class: "font-light text-white" } },
-			blockquote: { HTMLAttributes: { class: "border-l-4 border-gray-400 pl-4 italic" } },
-			code: {
-				HTMLAttributes: { class: "bg-neutral-800 py-2 px-4 rounded-xl text-lime-300" },
-			},
-			codeBlock: {
-				HTMLAttributes: { class: "bg-neutral-800 py-2 px-4 rounded-xl text-lime-300" },
-			},
-			bulletList: {
-				itemTypeName: "listItem",
-				keepMarks: true,
-				keepAttributes: true,
-				HTMLAttributes: { class: "list-disc m-0" },
-			},
-			orderedList: {
-				itemTypeName: "listItem",
-				keepMarks: true,
-				keepAttributes: true,
-				HTMLAttributes: { class: "list-decimal m-0" },
-			},
-		}),
-		Underline.configure({ HTMLAttributes: { class: "underline" } }),
-		Highlight.configure({ HTMLAttributes: { class: "bg-lime-100 text-neutral-900 px-2" } }),
-		TaskList,
-		TaskItem,
-		Color,
-		TextStyle,
-	];
+	const { currentNote } = useSelector((state: RootState) => state.notes);
+	const [editorContent, setEditorContent] = useState<string | null>(null);
+	const [saving, setSaving] = useState<boolean>(false);
 
 	const editor = useEditor({
-		extensions,
-		content,
+		extensions: getExtensions(),
+		content: "",
 		autofocus: true,
 		editorProps: {
 			attributes: {
 				class: "outline-none prose prose-2xl prose-neutral text-white",
 			},
 		},
+		onUpdate: ({ editor }) => {
+			const html = editor.getHTML();
+			setEditorContent(html);
+		},
 	});
 
-	if (!editor) return <></>;
+	useEffect(() => {
+		if (!currentNote || !editorContent) return;
+
+		setSaving(true);
+		const saveNote = setTimeout(async () => {
+			const updatedNote = await window.api.writeNote(currentNote?.name, editorContent);
+			setEditorContent(updatedNote.content);
+			setSaving(false);
+		}, 1000);
+
+		return (): void => {
+			clearTimeout(saveNote);
+		};
+	}, [editorContent]);
+
+	useEffect(() => {
+		editor?.commands.setContent(currentNote?.content || "");
+	}, [currentNote]);
+
+	if (!editor || !currentNote) return <div className="w-full p-4">Please select note</div>;
 
 	return (
-		<section className="w-full min-h-screen p-4">
+		<section className="relative w-full p-4 overflow-y-scroll h-fit max-h-[92dvh]">
+			<SavingIndicator saving={saving} />
 			<EditorContent editor={editor}>
-				<FloatingMenu editor={editor}>
-					<CustomFloatingMenu editor={editor} />
-				</FloatingMenu>
+				<span>
+					<FloatingMenu editor={editor}>
+						<CustomFloatingMenu editor={editor} />
+					</FloatingMenu>
+				</span>
 				<BubbleMenu editor={editor}>
 					<CustomBubbleMenu editor={editor} />
 				</BubbleMenu>

@@ -1,8 +1,17 @@
 import { toggleNewNoteModal } from "@store/modalsSlice";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const NewNoteModal = (): JSX.Element => {
+	const [noteName, setNoteName] = useState("");
 	const dispatch = useDispatch();
+
+	const handleClick = async (): Promise<void> => {
+		if (noteName.trim().length > 0) {
+			await window.api.writeNote(`${noteName}.md`, noteName);
+			dispatch(toggleNewNoteModal());
+		}
+	};
 
 	return (
 		<section className="absolute inset-0 flex items-center justify-center">
@@ -33,13 +42,17 @@ const NewNoteModal = (): JSX.Element => {
 					All your Notes will be saved at C:/User/nikhil4523/Documents/Notable
 				</p>
 				<input
+					onChange={(e) => setNoteName(e.target.value)}
 					type="text"
 					placeholder="Note name"
 					className="w-full text-xl rounded-none input input-bordered input-ghost bg-neutral-900"
 				/>
 				<p className="text-red-300">Invalid Note name</p>
 				<div className="flex items-center w-full gap-2 space-x-4">
-					<button className="flex-1 text-lg text-white border-2 rounded-none border-neutral-800 bg-neutral-900 btn btn-ghost no-animation hover:bg-green-300 hover:text-neutral-900">
+					<button
+						onClick={() => handleClick()}
+						className="flex-1 text-lg text-white border-2 rounded-none border-neutral-800 bg-neutral-900 btn btn-ghost no-animation hover:bg-green-300 hover:text-neutral-900"
+					>
 						Create
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

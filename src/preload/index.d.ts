@@ -1,7 +1,9 @@
+import { Note } from "@shared/types";
+
 export interface ElectronAPI {
 	getAllNotes: () => Promise<string[]>;
-	readNote: (noteName: string) => Promise<string>;
-	writeNote: (noteName: string, noteContent: string) => Promise<void>;
+	readNote: (noteName: string) => Promise<Note>;
+	writeNote: (noteName: string, noteContent: string) => Promise<Note>;
 	deleteNote: (noteName: string) => Promise<void>;
 	minimizeWindow: () => void;
 	resizeWindow: () => void;

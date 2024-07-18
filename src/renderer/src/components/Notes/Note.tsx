@@ -1,16 +1,26 @@
 import { toggleNoteInfoModal } from "@renderer/store/modalsSlice";
+import { setCurrentNote } from "@renderer/store/notesSlice";
+import { formatNoteName } from "@renderer/utils";
 import { useDispatch } from "react-redux";
 
 type PropsType = {
-	note: string;
+	noteName: string;
 };
 
-const Note = ({ note }: PropsType): JSX.Element => {
+const Note = ({ noteName }: PropsType): JSX.Element => {
 	const dispatch = useDispatch();
 
+	const handleClick = async (noteName: string): Promise<void> => {
+		const note = await window.api.readNote(noteName);
+		dispatch(setCurrentNote(note));
+	};
+
 	return (
-		<div className="flex items-center justify-between w-full p-4 group hover:bg-neutral-800">
-			<h1 className="text-xl truncate">Note {note}</h1>
+		<div
+			onClick={() => handleClick(noteName)}
+			className="flex items-center justify-between w-full p-4 cursor-pointer group hover:bg-neutral-800"
+		>
+			<h1 className="text-xl truncate">{formatNoteName(noteName)}</h1>
 			<button
 				onClick={() => dispatch(toggleNoteInfoModal())}
 				className="rounded-none opacity-0 btn btn-sm btn-square btn-ghost hover:bg-neutral-800 no-animation group-hover:opacity-100"

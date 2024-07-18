@@ -13,26 +13,33 @@
 		@apply select-none;
 		@apply font-mono antialiased text-white;
 		@apply overflow-hidden;
+		@apply scroll-smooth;
 	}
-
-	/* ::-webkit-scrollbar {
-		@apply w-2;
-	} */
 
 	::-webkit-scrollbar {
 		@apply hidden;
 	}
+
+	::marker {
+		@apply text-white !important;
+	}
+
 	ul[data-type="taskList"] {
-		@apply m-0;
+		@apply m-0 !important;
 		@apply p-0 !important;
 	}
 
 	ul[data-type="taskList"] li {
+		@apply m-0 !important;
 		@apply flex items-center gap-4;
 		@apply list-none;
+	}
+	ul[data-type="taskList"] li[data-checked="true"] div {
+		@apply line-through !important;
 	}
 
 	input[type="checkbox"] {
 		@apply checkbox !important;
+		@apply [--chkbg:theme(colors.green.300)] !important;
 	}
 }

@@ -40,7 +40,7 @@ const Dropdown = (): JSX.Element => {
 			</div>
 			<ul
 				tabIndex={0}
-				className="menu dropdown-content gap-2 z-[1] w-52 p-2 border-2 border-neutral-700"
+				className="bg-neutral-900 menu dropdown-content gap-2 z-[1] w-52 p-2 border-2 border-neutral-700"
 			>
 				<li>
 					<a

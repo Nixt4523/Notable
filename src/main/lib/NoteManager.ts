@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+import { Note } from "@shared/types";
 import * as fs from "fs/promises";
 import path from "path";
 
@@ -7,12 +7,12 @@ class NoteManager {
 
 	constructor(notesDir: string) {
 		this.notesDir = notesDir;
+		this.initialize();
 	}
 
 	async initialize(): Promise<void> {
 		try {
 			await fs.mkdir(this.notesDir, { recursive: true });
-			console.log("Notes directory created at ", this.notesDir);
 		} catch (error) {
 			console.log("Error while creating notes directory", error);
 			throw new Error("Failed to Initialize notes directory");
@@ -30,22 +30,22 @@ class NoteManager {
 		}
 	}
 
-	async readNote(noteName: string): Promise<string> {
+	async readNote(noteName: string): Promise<Note> {
 		try {
 			const notePath = path.join(this.notesDir, noteName);
 			const noteContent = await fs.readFile(notePath, "utf8");
-			return noteContent;
+			return { name: noteName, content: noteContent };
 		} catch (error) {
 			console.log("Error while reading note", error);
 			throw new Error("Failed to retrieve note content");
 		}
 	}
 
-	async writeNote(noteName: string, noteContent: string): Promise<void> {
+	async writeNote(noteName: string, noteContent: string): Promise<Note> {
 		try {
-			await this.initialize();
 			const notePath = path.join(this.notesDir, noteName);
 			await fs.writeFile(notePath, noteContent, { flag: "w" });
+			return { name: noteName, content: noteContent };
 		} catch (error) {
 			console.log(`Error while writing note ${noteName}`, error);
 			throw new Error("Failed to write note");
