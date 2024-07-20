@@ -1,19 +1,19 @@
 const SavingIndicator = ({ saving }: { saving: boolean }): JSX.Element => {
 	return (
-		<div className="absolute bottom-0 right-0 z-10 ml-auto w-fit">
+		<div className="text-sm">
 			{saving ? (
-				<span className="flex items-center gap-2 p-2 text-green-300 bg-neutral-800">
+				<span className="flex items-center gap-2 p-2 text-neutral-700">
 					Saving
-					<span className="loading loading-spinner loading-sm" />
+					<span className="loading loading-spinner loading-xs" />
 				</span>
 			) : (
-				<span className="flex items-center gap-2 p-2 text-green-300 bg-neutral-800">
+				<span className="flex items-center gap-2 p-2 text-neutral-700">
 					Saved
 					<svg
 						xmlns="http://www.w3.org/2000/svg"
 						viewBox="0 0 24 24"
-						width={20}
-						height={20}
+						width={18}
+						height={18}
 						color={"currentColor"}
 						fill={"none"}
 					>

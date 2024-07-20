@@ -70,6 +70,7 @@ app.whenReady().then(() => {
 		noteManager.writeNote(noteName, noteContent),
 	);
 	ipcMain.handle("deleteNote", (_, noteName: string) => noteManager.deleteNote(noteName));
+	ipcMain.handle("getNoteInfo", (_, noteName: string) => noteManager.getNoteInfo(noteName));
 
 	createWindow();
 

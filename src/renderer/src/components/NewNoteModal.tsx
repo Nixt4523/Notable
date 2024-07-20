@@ -1,20 +1,27 @@
 import { toggleNewNoteModal } from "@store/modalsSlice";
+import { validateNoteName } from "@utils/index";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 const NewNoteModal = (): JSX.Element => {
 	const [noteName, setNoteName] = useState("");
+	const [noteNameError, setNoteNameError] = useState(false);
 	const dispatch = useDispatch();
 
 	const handleClick = async (): Promise<void> => {
-		if (noteName.trim().length > 0) {
-			await window.api.writeNote(`${noteName}.md`, noteName);
-			dispatch(toggleNewNoteModal());
+		if (!validateNoteName(noteName)) {
+			setNoteNameError(true);
+			return;
 		}
+
+		await window.api.writeNote(`${noteName}.md`, "Hello, World!");
+		dispatch(toggleNewNoteModal());
+		setNoteNameError(false);
+		setNoteName("");
 	};
 
 	return (
-		<section className="absolute inset-0 flex items-center justify-center">
+		<section className="absolute inset-0 z-50 flex items-center justify-center">
 			<div className="relative w-3/4 p-8 space-y-4 border-2 2xl:w-1/4 xl:w-1/3 md:w-1/2 sm:w-2/3 h-fit border-neutral-700 bg-neutral-900">
 				<div
 					onClick={() => dispatch(toggleNewNoteModal())}
@@ -47,7 +54,12 @@ const NewNoteModal = (): JSX.Element => {
 					placeholder="Note name"
 					className="w-full text-xl rounded-none input input-bordered input-ghost bg-neutral-900"
 				/>
-				<p className="text-red-300">Invalid Note name</p>
+				<span className="text-sm text-neutral-700">
+					{
+						"(Note name can only contain letters, hyphens and underscores, and must be at least 3 characters long)"
+					}
+				</span>
+				{noteNameError && <p className="text-red-300">Invalid Note name</p>}
 				<div className="flex items-center w-full gap-2 space-x-4">
 					<button
 						onClick={() => handleClick()}

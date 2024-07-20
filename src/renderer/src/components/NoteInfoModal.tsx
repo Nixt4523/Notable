@@ -1,11 +1,25 @@
+import { RootState } from "@renderer/store";
+import { setCurrentNote, setCurrentNoteInfo } from "@renderer/store/notesSlice";
+import { formatNoteName } from "@renderer/utils";
 import { toggleNoteInfoModal } from "@store/modalsSlice";
-import { useDispatch } from "react-redux";
+import { formatDistanceToNow } from "date-fns";
+import { useDispatch, useSelector } from "react-redux";
 
 const NoteInfoModal = (): JSX.Element => {
 	const dispatch = useDispatch();
+	const { currentNoteInfo } = useSelector((state: RootState) => state.notes);
+
+	if (!currentNoteInfo) return <></>;
+
+	const handleClick = async (): Promise<void> => {
+		await window.api.deleteNote(currentNoteInfo?.name as string);
+		dispatch(setCurrentNoteInfo(null));
+		dispatch(setCurrentNote(null));
+		dispatch(toggleNoteInfoModal());
+	};
 
 	return (
-		<section className="absolute inset-0 flex items-center justify-center ">
+		<section className="absolute inset-0 z-50 flex items-center justify-center ">
 			<div className="relative w-3/4 p-8 space-y-4 border-2 2xl:w-1/4 xl:w-1/3 md:w-1/2 sm:w-2/3 h-fit border-neutral-700 bg-neutral-900">
 				<div
 					onClick={() => dispatch(toggleNoteInfoModal())}
@@ -28,16 +42,27 @@ const NoteInfoModal = (): JSX.Element => {
 						/>
 					</svg>
 				</div>
-				<h1 className="text-2xl font-bold">Note name</h1>
-				<p className="text-base opacity-50">
-					Path C:/User/nikhil4523/Documents/Notable/note1.md
-				</p>
+				<h1 className="text-2xl font-bold">
+					{formatNoteName(currentNoteInfo?.name as string)}
+				</h1>
+				<p className="text-base opacity-50">{currentNoteInfo?.path}</p>
 				<div>
-					<p className="text-base opacity-50">Create on June 10, 2022</p>
-					<p className="text-base opacity-50">Last edited 10 minutes ago</p>
+					<p className="text-base opacity-50">
+						Create{" "}
+						{formatDistanceToNow(currentNoteInfo?.createdAt, { addSuffix: true })}
+					</p>
+					<p className="text-base opacity-50">
+						Last edited{" "}
+						{formatDistanceToNow(currentNoteInfo?.lastEdited, {
+							addSuffix: true,
+						})}
+					</p>
 				</div>
 				<div className="flex items-center w-full gap-2 space-x-4">
-					<button className="flex-1 text-lg border-2 rounded-none group border-neutral-800 btn btn-ghost no-animation hover:bg-neutral-900 text-neutral-400 hover:border-red-300 hover:text-red-300">
+					<button
+						onClick={handleClick}
+						className="flex-1 text-lg border-2 rounded-none group border-neutral-800 btn btn-ghost no-animation hover:bg-neutral-900 text-neutral-400 hover:border-red-300 hover:text-red-300"
+					>
 						Delete
 						<svg
 							xmlns="http://www.w3.org/2000/svg"

@@ -1,4 +1,4 @@
-import { Note } from "@shared/types";
+import { Note, NoteInfo } from "@shared/types";
 import * as fs from "fs/promises";
 import path from "path";
 
@@ -56,10 +56,26 @@ class NoteManager {
 		try {
 			const notePath = path.join(this.notesDir, noteName);
 			await fs.unlink(notePath);
-			console.log(`${notePath} deleted successfully`);
 		} catch (error) {
 			console.log(`Error while deleting note ${noteName}`, error);
 			throw new Error("Failed to delete note");
+		}
+	}
+
+	async getNoteInfo(noteName: string): Promise<NoteInfo> {
+		try {
+			const notePath = path.join(this.notesDir, noteName);
+			const stats = await fs.stat(notePath);
+
+			return {
+				name: noteName,
+				path: notePath,
+				createdAt: stats.birthtime,
+				lastEdited: stats.mtime,
+			};
+		} catch (error) {
+			console.log(`Error while getting note info for ${noteName}`, error);
+			throw new Error("Failed to get note info");
 		}
 	}
 }

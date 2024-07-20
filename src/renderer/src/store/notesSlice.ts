@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Note } from "@shared/types";
+import { Note, NoteInfo } from "@shared/types";
 
 export type NotesState = {
 	notes: string[];
 	currentNote: Note | null;
+	currentNoteInfo: NoteInfo | null;
 	loading: boolean;
 	error: string | null;
 };
@@ -11,6 +12,7 @@ export type NotesState = {
 const initialState: NotesState = {
 	notes: [],
 	currentNote: null,
+	currentNoteInfo: null,
 	loading: false,
 	error: null,
 };
@@ -36,6 +38,9 @@ const notesSlice = createSlice({
 		setCurrentNote: (state, action: PayloadAction<Note | null>) => {
 			state.currentNote = action.payload;
 		},
+		setCurrentNoteInfo: (state, action: PayloadAction<NoteInfo | null>) => {
+			state.currentNoteInfo = action.payload;
+		},
 		setLoading: (state, action: PayloadAction<boolean>) => {
 			state.loading = action.payload;
 		},
@@ -46,6 +51,14 @@ const notesSlice = createSlice({
 	},
 });
 
-export const { setNotes, addNote, updateNote, deleteNote, setCurrentNote, setLoading, setError } =
-	notesSlice.actions;
+export const {
+	setNotes,
+	addNote,
+	updateNote,
+	deleteNote,
+	setCurrentNote,
+	setCurrentNoteInfo,
+	setLoading,
+	setError,
+} = notesSlice.actions;
 export default notesSlice.reducer;

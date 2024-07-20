@@ -49,8 +49,7 @@ const Editor = (): JSX.Element => {
 	if (!editor || !currentNote) return <div className="w-full p-4">Please select note</div>;
 
 	return (
-		<section className="relative w-full p-4 overflow-y-scroll h-fit max-h-[92dvh]">
-			<SavingIndicator saving={saving} />
+		<section className="w-full p-4 overflow-y-scroll h-fit max-h-[92dvh] space-y-4">
 			<EditorContent editor={editor}>
 				<span>
 					<FloatingMenu editor={editor}>
@@ -61,6 +60,7 @@ const Editor = (): JSX.Element => {
 					<CustomBubbleMenu editor={editor} />
 				</BubbleMenu>
 			</EditorContent>
+			<SavingIndicator saving={saving} />
 		</section>
 	);
 };
