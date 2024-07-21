@@ -4,8 +4,8 @@ import Sidebar from "@components/Sidebar/Sidebar";
 import WindowActions from "@components/WindowActions";
 import { RootState } from "@renderer/store";
 import { useSelector } from "react-redux";
-import NewNoteModal from "./NewNoteModal";
-import NoteInfoModal from "./NoteInfoModal";
+import NewNoteModal from "./Modals/NewNoteModal";
+import NoteInfoModal from "./Modals/NoteInfoModal";
 
 const Layout = (): JSX.Element => {
 	const { newNoteModalOpen, noteInfoModalOpen } = useSelector((state: RootState) => state.modals);

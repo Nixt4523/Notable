@@ -2,9 +2,10 @@ import { RootState } from "@renderer/store";
 import { BubbleMenu, EditorContent, FloatingMenu, useEditor } from "@tiptap/react";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import CustomBubbleMenu from "./CustomBubbleMenu";
-import CustomFloatingMenu from "./CustomFloatingMenu";
+import OpenNotes from "../OpenNotes";
 import { getExtensions } from "./EditorExtensions";
+import CustomBubbleMenu from "./Menus/CustomBubbleMenu";
+import CustomFloatingMenu from "./Menus/CustomFloatingMenu";
 import SavingIndicator from "./SavingIndicator";
 
 const Editor = (): JSX.Element => {
@@ -46,7 +47,7 @@ const Editor = (): JSX.Element => {
 		editor?.commands.setContent(currentNote?.content || "");
 	}, [currentNote]);
 
-	if (!editor || !currentNote) return <div className="w-full p-4">Please select note</div>;
+	if (!editor || !currentNote) return <OpenNotes />;
 
 	return (
 		<section className="w-full p-4 overflow-y-scroll h-fit max-h-[92dvh] space-y-4">

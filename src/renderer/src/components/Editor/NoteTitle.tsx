@@ -7,6 +7,8 @@ const NoteTitle = (): JSX.Element => {
 	const { currentNote } = useSelector((state: RootState) => state.notes);
 	const dispatch = useDispatch();
 
+	if (!currentNote) return <></>;
+
 	return (
 		<div className="w-full border-b-2 border-neutral-700 h-[8dvh] flex gap-4 items-center px-4">
 			<h1 className="text-3xl font-bold outline-none lg:text-5xl">

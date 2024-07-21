@@ -2,6 +2,7 @@ import { RootState } from "@renderer/store";
 import { setNotes } from "@renderer/store/notesSlice";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import NoNotes from "../NoNotes";
 import Note from "./Note";
 
 const NoteList = (): JSX.Element => {
@@ -21,6 +22,8 @@ const NoteList = (): JSX.Element => {
 	if (loading) {
 		return <span className="loading loading-spinner" />;
 	}
+
+	if (notes.length === 0) return <NoNotes />;
 
 	return (
 		<main className="flex flex-col items-start flex-1 w-full h-full overflow-y-auto">

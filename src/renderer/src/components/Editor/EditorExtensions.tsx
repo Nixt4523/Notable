@@ -1,5 +1,6 @@
 import Color from "@tiptap/extension-color";
 import Highlight from "@tiptap/extension-highlight";
+import Link from "@tiptap/extension-link";
 import TaskItem from "@tiptap/extension-task-item";
 import TaskList from "@tiptap/extension-task-list";
 import TextStyle from "@tiptap/extension-text-style";
@@ -41,6 +42,12 @@ export const getExtensions = (): returnType => [
 		},
 	}),
 	Underline.configure({ HTMLAttributes: { class: "underline" } }),
+	Link.configure({
+		HTMLAttributes: { class: "underline text-blue-300 cursor-pointer" },
+		autolink: true,
+		openOnClick: true,
+		linkOnPaste: true,
+	}),
 	Highlight.configure({ HTMLAttributes: { class: "bg-lime-100 text-neutral-900 px-2" } }),
 	TaskList,
 	TaskItem,
